@@ -3,8 +3,8 @@
 
 from PyQt4 import QtCore, QtGui
 from table_def import client, act_log
-rec_act=''
-rec_client=''
+rec_act = ''
+rec_client = ''
 
 
 try:
@@ -23,6 +23,11 @@ except AttributeError:
 
 class Ui_CRM_form(object):
     def setupUi(self, CRM_form):
+        '''
+        this function sets up our Gui with all of our specified paramaters. 
+
+        Ie. widget size, buttons, displays ect. 
+        '''
         CRM_form.setObjectName(_fromUtf8("CRM_form"))
         CRM_form.resize(718, 624)
         CRM_form.setWindowOpacity(1.0)
@@ -165,19 +170,21 @@ class Ui_CRM_form(object):
         #set current client
         #current_client=str(self.clientcombo.currentText())
         
-        #set date
+        #set gui date as today's date and formats it 
         today = QtCore.QDate.currentDate()
         self.dateEdit.setDate(today)
         self.dateEdit.setDisplayFormat("MM.dd.yyyy")
         self.cadddateEdit_2.setDate(today)
         self.cadddateEdit_2.setDisplayFormat("MM.dd.yyyy")
-        #populate the Client list
+        
+        #populate the Client list from our client table
         self.popc()
 
-        #populate the act list 
+        #populate the activity log list from our activity log table 
         self.popr()
 
         # slots and signals
+        # these lines below, call the methods in our gui when an event happens. ie a button is clicked ect. 
         self.retranslateUi(CRM_form)
         self.tabWidget.setCurrentIndex(1)
         QtCore.QObject.connect(self.viewallrbutt, QtCore.SIGNAL(_fromUtf8("clicked()")), self.sql_querry_all_act)
@@ -185,10 +192,10 @@ class Ui_CRM_form(object):
         QtCore.QObject.connect(self.exitbutt, QtCore.SIGNAL(_fromUtf8("clicked()")), CRM_form.close)
         QtCore.QObject.connect(self.listWidget, QtCore.SIGNAL(_fromUtf8("itemClicked(QListWidgetItem*)")), self.c_activity)
         QtCore.QObject.connect(self.addsql_submitt, QtCore.SIGNAL(_fromUtf8("clicked()")), self.add_sql_act)
-        QtCore.QObject.connect(self.clientcontacts, QtCore.SIGNAL(_fromUtf8("clicked()")), self.pyquerry1)
+        QtCore.QObject.connect(self.clientcontacts, QtCore.SIGNAL(_fromUtf8("clicked()")), self.place_holder)
         QtCore.QObject.connect(self.clientreffernceform, QtCore.SIGNAL(_fromUtf8("clicked()")), self.open_referncefile)
         QtCore.QObject.connect(self.clientcombo, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(QString)")), self.c_activity)
-        QtCore.QObject.connect(self.viewallcontactsbutt, QtCore.SIGNAL(_fromUtf8("clicked()")), self.pyquerry1)
+        QtCore.QObject.connect(self.viewallcontactsbutt, QtCore.SIGNAL(_fromUtf8("clicked()")), self.place_holder)
         QtCore.QObject.connect(self.viewallreferncebutt, QtCore.SIGNAL(_fromUtf8("clicked()")), self.open_referncefolder)
         QtCore.QObject.connect(self.caddsumbit, QtCore.SIGNAL(_fromUtf8("clicked()")), self.add_sql_c)
         QtCore.QObject.connect(self.cdelete, QtCore.SIGNAL(_fromUtf8("clicked()")), self.del_c)
@@ -234,19 +241,23 @@ class Ui_CRM_form(object):
         self.label.setText(_translate("CRM_form", "Client Information", None))
         self.actionTestaction.setText(_translate("CRM_form", "Testaction", None))
 
-    def pyquerry1(self):
-        print"this is only a test"
-    
-    def pyquerry2(self, item):
-        print"this is only a test"
-        print item.text()
+    def place_holder(self):
+        '''
+        Simple place holder function
+        '''
+        pass
+        #print"This is only a test.\n This functionality has not been implemented yet. But it will be soon .... "
     
     def sql_connect(self):
+        '''
+        Connects to your SQLlite data base and returns the session object
+        '''
         from sqlalchemy import create_engine
         from sqlalchemy.orm import sessionmaker
         
- 
-        engine = create_engine('sqlite:///CRM.sqlite', echo=False)
+        #instantiate our engine
+        database = 'CRM.sqlite'
+        engine = create_engine('sqlite:///' + database, echo=False)
  
         # create a Session
         Session = sessionmaker(bind=engine)
@@ -255,6 +266,9 @@ class Ui_CRM_form(object):
         return session
  
     def sqltotext_act(self,o,i):
+        '''
+
+        '''
         #for the act_log table
         #needs the o as an iterable, and the sqlachemy object i
         # needs to deal with characters like \ and suchbefore the start of a decrpt ect.
@@ -266,17 +280,24 @@ class Ui_CRM_form(object):
         return item
     
     def sqltotext_client(self,o,i):
+        '''
+        returns a SQL querry result from the client table as a QtGui item so it can be 
+        populated in a QtGui listWidget.
+        '''
         #for the client table
         #needs the o as an iterable, and the sqlachemy object i
         # needs to deal with characters like \ and suchbefore the start of a decrpt ect.
-        g = {0:i.client_id,1:i.first_name, 2:i.last_name,3:i.dob, 4:i.phone_number,5: i.account}
+        g = {0 : i.client_id, 1 : i.first_name, 2 : i.last_name, 3 : i.dob, 4 : i.phone_number, 5 : i.account}
         y = g[o]
         item = QtGui.QTableWidgetItem()
         item.setText(str(y))
         return item
         
     def clienttable_build(self, res):
-        #Setup our table 
+        '''
+        Creates and fills the client table in our Gui
+        '''
+        
         #self.tableWidget = QtGui.QTableWidget(CRM_form) 
         self.tableWidget.setRowCount(len(res))
         self.tableWidget.setColumnCount(6)
@@ -366,7 +387,6 @@ class Ui_CRM_form(object):
         self.tableMain_build(res)
     
     def add_sql_c(self):
-        import re
         import datetime
         
         session = self.sql_connect()
