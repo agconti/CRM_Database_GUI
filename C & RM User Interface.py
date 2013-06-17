@@ -3,7 +3,6 @@
 
 from PyQt4 import QtCore, QtGui
 from table_def import client, act_log
-from sqlalchemy import desc
 rec_act=''
 rec_client=''
 
@@ -256,12 +255,11 @@ class Ui_CRM_form(object):
         return session
  
     def sqltotext_act(self,o,i):
-        import unicodedata
         #for the act_log table
         #needs the o as an iterable, and the sqlachemy object i
         # needs to deal with characters like \ and suchbefore the start of a decrpt ect.
-        g={0:i.client_id, 1:i.date, 2:i.descp_cat, 3:i.time, 4:i.total, 5:i.descp}
-        y=g[o]
+        g = {0:i.client_id, 1:i.date, 2:i.descp_cat, 3:i.time, 4:i.total, 5:i.descp}
+        y = g[o]
   
         item = QtGui.QTableWidgetItem()
         item.setText(str(y))
@@ -271,8 +269,8 @@ class Ui_CRM_form(object):
         #for the client table
         #needs the o as an iterable, and the sqlachemy object i
         # needs to deal with characters like \ and suchbefore the start of a decrpt ect.
-        g={0:i.client_id,1:i.first_name, 2:i.last_name,3:i.dob, 4:i.phone_number,5: i.account}
-        y=g[o]
+        g = {0:i.client_id,1:i.first_name, 2:i.last_name,3:i.dob, 4:i.phone_number,5: i.account}
+        y = g[o]
         item = QtGui.QTableWidgetItem()
         item.setText(str(y))
         return item
@@ -286,8 +284,8 @@ class Ui_CRM_form(object):
         #set main table headers
         for d in xrange(0,6):
 
-            h={0:'Client Id',1:'First Name', 2:'Last Name',3:'D.O.B.', 4:'Phone number',5: 'Account'}
-            header_item=h[d]
+            h = {0:'Client Id',1:'First Name', 2:'Last Name',3:'D.O.B.', 4:'Phone number',5: 'Account'}
+            header_item = h[d]
             self.tableWidget.setHorizontalHeaderItem(d,QtGui.QTableWidgetItem(header_item))
 
         #populate main table
@@ -303,8 +301,8 @@ class Ui_CRM_form(object):
 
         #set headers
         for d in xrange(0,5):
-            h={0:'Client Id',1:'Date', 2:'Description',3:'Time', 4:'Total'}
-            header_item=h[d]
+            h = {0:'Client Id',1:'Date', 2:'Description',3:'Time', 4:'Total'}
+            header_item = h[d]
             self.tableWidget.setHorizontalHeaderItem(d,QtGui.QTableWidgetItem(header_item))
 
         #populate table
@@ -314,7 +312,7 @@ class Ui_CRM_form(object):
     
     def sql_querry_all_act(self):
        #connect to the database
-        session= self.sql_connect() 
+        session = self.sql_connect() 
 
         # how to do a SELECT * (i.e. all)
         res = session.query(act_log).order_by("Date desc").all()
@@ -324,7 +322,7 @@ class Ui_CRM_form(object):
         
     def sql_querry_all_client(self):
         #connect to database
-        session=self.sql_connect()
+        session = self.sql_connect()
  
         # how to do a SELECT * (i.e. all)
         res = session.query(client).all()
@@ -336,55 +334,65 @@ class Ui_CRM_form(object):
     def add_sql_act(self):
         import datetime
         #Connect to sever
-        session= self.sql_connect()
+        session = self.sql_connect()
         
-        c=self.clientcombo.currentText()
-        c=self.c_activity(c)
-        print c
-        u=self.unit_price.text()
+        c = self.clientcombo.currentText()
+        c = self.c_activity(c)
+        print c # debug
+        u = self.unit_price.text()
 
-        raw_date=str(self.dateEdit.text()) 
-        d=datetime.datetime.strptime(raw_date, "%m.%d.%Y")
+        raw_date = str(self.dateEdit.text()) 
+        d = datetime.datetime.strptime(raw_date, "%m.%d.%Y")
         
         #get and incriment primary key
-        res_id=session.query(act_log).order_by('transaction_id desc').first()
-        e=res_id.transaction_id
-        e+=1
+        res_id = session.query(act_log).order_by('transaction_id desc').first()
+        e = res_id.transaction_id
+        e += 1
 
 
-        add_log = act_log(transaction_id=e, client_id=str(c), date=d, descp=str(self.descpt_inout.toPlainText()), descp_cat=str(self.descript_cat_inut.currentText()), time=float(self.time_input.text()
-), unit_price=str(u), total=(int(u)*float(self.time_input.text())))
+        add_log = act_log(
+                            transaction_id=e, client_id=str(c), date=d, 
+                            descp=str(self.descpt_inout.toPlainText()), 
+                            descp_cat=str(self.descript_cat_inut.currentText()), 
+                            time=float(self.time_input.text()), unit_price=str(u), 
+                            total=(int(u)*float(self.time_input.text()))
+                            )
 
         session.add(add_log)
         session.commit()
-        rec_act=e
+        rec_act = e
         #update main table
-        res=session.query(act_log).filter(act_log.client_id==str(c)).order_by("transaction_id desc").all()
+        res = session.query(act_log).filter(act_log.client_id == str(c)).order_by("transaction_id desc").all()
         self.tableMain_build(res)
     
     def add_sql_c(self):
         import re
         import datetime
         
-        session=self.sql_connect()
+        session = self.sql_connect()
 
-        res_id=session.query(client).order_by('client_id desc').first()
-        e=int(res_id.client_id)
-        e+=1
+        res_id = session.query(client).order_by('client_id desc').first()
+        e = int(res_id.client_id)
+        e += 1
 
-        d=str(self.cadddateEdit_2.text())
-        d=datetime.datetime.strptime(d, "%m.%d.%Y")
+        d = str(self.cadddateEdit_2.text())
+        d = datetime.datetime.strptime(d, "%m.%d.%Y")
     
-        add_c = client(client_id=e, first_name=str(self.caddfistname.text()), last_name=str(self.caddlastname.text()), dob=d, phone_number=str(self.phonelineEdit_3.text()), account=str(self.caddaccount.text()))
+        add_c = client(
+                        client_id=e, first_name=str(self.caddfistname.text()), 
+                        last_name=str(self.caddlastname.text()), dob=d, 
+                        phone_number=str(self.phonelineEdit_3.text()), 
+                        account=str(self.caddaccount.text())
+                        )
 
         session.add(add_c)
         session.commit()
-        rec_client=e
+        rec_client = e
        
         #update main table
         self.popc()
 
-        res=session.query(client).all()
+        res = session.query(client).all()
 
         self.clienttable_build(res)
 
@@ -392,12 +400,11 @@ class Ui_CRM_form(object):
     def del_act(self):
         print "test"
         #connect to the database
-        #  session=self.sql_connect()
-        
-       # # if not(rec_act ==""):
-       #  session.query(act_log).filter(act_log.transaction_id==rec_act).delete()
-       #  res=session.query(act_log).order_by("Date desc").all()
-       #  self.tableMain_build(res)
+        #  session=self.sql_connect()        
+        # # if not(rec_act ==""):
+        #  session.query(act_log).filter(act_log.transaction_id==rec_act).delete()
+        #  res=session.query(act_log).order_by("Date desc").all()
+        #  self.tableMain_build(res)
 
     def del_c(self):
         print "test"
@@ -411,30 +418,30 @@ class Ui_CRM_form(object):
     def c_activity(self, item):
         #maket his on click function set the value of that combo box and bring up activity to that patient. thus easy input
         import re
-        session= self.sql_connect()
+        session = self.sql_connect()
         
-        if type(item)==QtCore.QString:
-            item=str(item)
-            s=re.split(", ", item)
-            s0=s[0]
-            s1=s[1]
+        if type(item) == QtCore.QString:
+            item = str(item)
+            s = re.split(", ", item)
+            s0 = s[0]
+            s1 = s[1]
             #current_client=s0+" "+s1
         
-        if type(item)==QtGui.QListWidgetItem:
-            item=item.text()
-            s=re.split(", ", item)
-            s0=str(s[0])
-            s1=str(s[1])
+        if type(item) == QtGui.QListWidgetItem:
+            item = item.text()
+            s = re.split(", ", item)
+            s0 = str(s[0])
+            s1 = str(s[1])
             #current_client=s0+" "+s1
 
          
-        resc =session.query(client).filter(client.last_name==s1 and client.frist_name==s0)
+        resc =session.query(client).filter((client.last_name == s1) and (client.frist_name == s0))
 
         for i in resc:
-            v=i.client_id
+            v = i.client_id
             print v  
         
-        res = session.query(act_log).filter(act_log.client_id==v).all()
+        res = session.query(act_log).filter(act_log.client_id == v).all()
 
         #build table
         self.tableMain_build(res)
@@ -445,22 +452,22 @@ class Ui_CRM_form(object):
     def popc(self):
         #populates the client list when the UI first init
         # connect to db
-        session=self.sql_connect()
+        session = self.sql_connect()
         #Clears list for clean refreses
         self.listWidget.clear()
         self.clientcombo.clear()
         # how to do a SELECT * (i.e. all)
         res = session.query(client).all()
         for e,i in enumerate(res):
-            s=i.first_name
-            s=s+", "+i.last_name
+            s = i.first_name
+            s = s + ", " + i.last_name
             item = QtGui.QListWidgetItem(s)
             self.listWidget.addItem(item)
             self.clientcombo.addItem(str(item.text()))
        
 
     def popr(self):
-        session=self.sql_connect()
+        session = self.sql_connect()
         
         res = session.query(act_log).order_by("Date desc").limit(9)
 
@@ -470,8 +477,8 @@ class Ui_CRM_form(object):
         #self.tableWidget = QtGui.QTableWidget(CRM_form) 
         #set headers
         for d in xrange(0,5):
-            h={0:'Client Id',1:'Date', 2:'Description',3:'Time', 4:'Total'}
-            header_item=h[d]
+            h = {0:'Client Id',1:'Date', 2:'Description',3:'Time', 4:'Total'}
+            header_item = h[d]
             self.tableWidget.setHorizontalHeaderItem(d,QtGui.QTableWidgetItem(header_item))
 
         #populate table
