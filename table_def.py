@@ -1,5 +1,5 @@
 # table_def.py
-from sqlalchemy import create_engine, ForeignKey, Sequence
+from sqlalchemy import ForeignKey, Sequence
 from sqlalchemy import Column, Date, Integer, String, Float, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
