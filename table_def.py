@@ -50,7 +50,7 @@ class act_log(Base):
     client = relationship("client", backref=backref("client", order_by=client_id))
     # forein key contact
     provider_id = Column(Integer, ForeignKey('contact.provider_id'))
-    contact = relationship("contact", backref=backref("contact", order_by=client_id))
+    contact = relationship("contact", backref=backref("contact", order_by=provider_id))
     
     date = Column(Date)    
     descp = Column(Text)   
@@ -83,7 +83,7 @@ class contact(Base):
     provider_id = Column(Integer, Sequence('provider_id_seq'), primary_key=True) 
     #forgein key client
     client_id = Column(Integer, ForeignKey('client.client_id'))
-    client = relationship("client", backref=backref("client", order_by=client_id))
+    #client = relationship("client", backref=backref("client", order_by=client_id))
     # forein key contact
     # can add transacton id in the future
     

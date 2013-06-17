@@ -1,8 +1,8 @@
-#Catastrophic and Rehabilitaive Managment Gui
-#Copywrite Andrew Conti 2013
+#Catastrophic and Rehabilitative Management Gui
+#Copy-write Andrew Conti 2013
 
 from PyQt4 import QtCore, QtGui
-from table_def import client, act_log
+from table_def import client, act_log, contact
 rec_act = ''
 rec_client = ''
 
@@ -178,10 +178,10 @@ class Ui_CRM_form(object):
         self.cadddateEdit_2.setDisplayFormat("MM.dd.yyyy")
         
         #populate the Client list from our client table
-        self.popc()
+        self.populate_clients()
 
         #populate the activity log list from our activity log table 
-        self.popr()
+        self.populate_activity_log()
 
         # slots and signals
         # these lines below, call the methods in our gui when an event happens. ie a button is clicked ect. 
@@ -255,9 +255,10 @@ class Ui_CRM_form(object):
         from sqlalchemy import create_engine
         from sqlalchemy.orm import sessionmaker
         
-        #instantiate our engine
-        database = 'CRM.sqlite'
-        engine = create_engine('sqlite:///' + database, echo=False)
+        #database = 'index.db'
+        #conn = sqlite3.connect(database)
+        #instantiate our engine #C:\Users\Andrew\Documents\CRM\db Tests\
+        engine = create_engine('sqlite:///CRM.sqlite', echo=False)
  
         # create a Session
         Session = sessionmaker(bind=engine)
@@ -410,7 +411,7 @@ class Ui_CRM_form(object):
         rec_client = e
        
         #update main table
-        self.popc()
+        self.populate_clients()
 
         res = session.query(client).all()
 
@@ -469,8 +470,10 @@ class Ui_CRM_form(object):
         return v
 
 
-    def popc(self):
-        #populates the client list when the UI first init
+    def populate_clients(self):
+        '''
+        populates the client list when the UI first init
+        '''
         # connect to db
         session = self.sql_connect()
         #Clears list for clean refreses
@@ -486,7 +489,10 @@ class Ui_CRM_form(object):
             self.clientcombo.addItem(str(item.text()))
        
 
-    def popr(self):
+    def populate_activity_log(self):
+        '''
+        Populates the activity log results
+        '''
         session = self.sql_connect()
         
         res = session.query(act_log).order_by("Date desc").limit(9)
