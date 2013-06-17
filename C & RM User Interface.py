@@ -187,15 +187,15 @@ class Ui_CRM_form(object):
         # these lines below, call the methods in our gui when an event happens. ie a button is clicked ect. 
         self.retranslateUi(CRM_form)
         self.tabWidget.setCurrentIndex(1)
-        QtCore.QObject.connect(self.viewallrbutt, QtCore.SIGNAL(_fromUtf8("clicked()")), self.sql_querry_all_act)
-        QtCore.QObject.connect(self.viewallcbutt, QtCore.SIGNAL(_fromUtf8("clicked()")), self.sql_querry_all_client)
+        QtCore.QObject.connect(self.viewallrbutt, QtCore.SIGNAL(_fromUtf8("clicked()")), self.sql_query_all_act)
+        QtCore.QObject.connect(self.viewallcbutt, QtCore.SIGNAL(_fromUtf8("clicked()")), self.sql_query_all_client)
         QtCore.QObject.connect(self.exitbutt, QtCore.SIGNAL(_fromUtf8("clicked()")), CRM_form.close)
         QtCore.QObject.connect(self.listWidget, QtCore.SIGNAL(_fromUtf8("itemClicked(QListWidgetItem*)")), self.c_activity)
         QtCore.QObject.connect(self.addsql_submitt, QtCore.SIGNAL(_fromUtf8("clicked()")), self.add_sql_act)
-        QtCore.QObject.connect(self.clientcontacts, QtCore.SIGNAL(_fromUtf8("clicked()")), self.place_holder)
+        QtCore.QObject.connect(self.clientcontacts, QtCore.SIGNAL(_fromUtf8("clicked()")), self.populate_contact_list)
         QtCore.QObject.connect(self.clientreffernceform, QtCore.SIGNAL(_fromUtf8("clicked()")), self.open_referncefile)
         QtCore.QObject.connect(self.clientcombo, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(QString)")), self.c_activity)
-        QtCore.QObject.connect(self.viewallcontactsbutt, QtCore.SIGNAL(_fromUtf8("clicked()")), self.place_holder)
+        QtCore.QObject.connect(self.viewallcontactsbutt, QtCore.SIGNAL(_fromUtf8("clicked()")), self.populate_contact_list)
         QtCore.QObject.connect(self.viewallreferncebutt, QtCore.SIGNAL(_fromUtf8("clicked()")), self.open_referncefolder)
         QtCore.QObject.connect(self.caddsumbit, QtCore.SIGNAL(_fromUtf8("clicked()")), self.add_sql_c)
         QtCore.QObject.connect(self.cdelete, QtCore.SIGNAL(_fromUtf8("clicked()")), self.del_c)
@@ -280,6 +280,20 @@ class Ui_CRM_form(object):
         item.setText(str(y))
         return item
     
+    def sqltotext_contact(self,o,i):
+        '''
+
+        '''
+        #for the act_log table
+        #needs the o as an iterable, and the sqlachemy object i
+        # needs to deal with characters like \ and suchbefore the start of a decrpt ect.
+        g = {0:'PROVIDER_NAME',1:'SPECIALITY', 2:'PHONE',3:'ADDRESS', 4:'Miles'}
+        y = g[o]
+  
+        item = QtGui.QTableWidgetItem()
+        item.setText(str(y))
+        return item
+
     def sqltotext_client(self,o,i):
         '''
         returns a SQL querry result from the client table as a QtGui item so it can be 
@@ -315,15 +329,17 @@ class Ui_CRM_form(object):
             for o in xrange(0,6):
                 self.tableWidget.setItem(e, o, self.sqltotext_client(o,i))
    
-    def tableMain_build(self,res):
-        #Setup our table 
+    def tableMain_build_act(self,res):
+        '''
+        etup our table for displaying activity log info
+        '''
         #self.tableWidget = QtGui.QTableWidget(CRM_form) 
         self.tableWidget.setRowCount(len(res))
         self.tableWidget.setColumnCount(5)
 
         #set headers
         for d in xrange(0,5):
-            h = {0:'Client Id',1:'Date', 2:'Description',3:'Time', 4:'Total'}
+            h = {0:'Client Id',1:'Date', 2:'Description',3:'Time', 4:'Total'} 
             header_item = h[d]
             self.tableWidget.setHorizontalHeaderItem(d,QtGui.QTableWidgetItem(header_item))
 
@@ -332,17 +348,42 @@ class Ui_CRM_form(object):
             for o in xrange(0,5):
                 self.tableWidget.setItem(e, o, self.sqltotext_act(o,i))
     
-    def sql_querry_all_act(self):
-       #connect to the database
+    def tableMain_build_contact(self,res):
+        '''
+        Setup our table for displaying contacts
+        '''
+        #self.tableWidget = QtGui.QTableWidget(CRM_form) 
+        self.tableWidget.setRowCount(len(res))
+        self.tableWidget.setColumnCount(5)
+
+        #set headers
+        for d in xrange(0,5):
+            h = {0:'PROVIDER_NAME',1:'SPECIALITY', 2:'PHONE',3:'ADDRESS', 4:'Miles'} 
+            header_item = h[d]
+            self.tableWidget.setHorizontalHeaderItem(d,QtGui.QTableWidgetItem(header_item))
+
+        #populate table
+        for e,i in enumerate(res):
+            for o in xrange(0,5):
+                self.tableWidget.setItem(e, o, self.sqltotext_act(o,i))
+
+    def sql_query_all_act(self):
+        '''
+        queries all activities in database
+        '''
+        #connect to the database
         session = self.sql_connect() 
 
         # how to do a SELECT * (i.e. all)
         res = session.query(act_log).order_by("Date desc").all()
         #build table
-        self.tableMain_build(res)
+        self.tableMain_build_act(res)
     
         
-    def sql_querry_all_client(self):
+    def sql_query_all_client(self):
+        '''
+        queries all clients
+        '''
         #connect to database
         session = self.sql_connect()
  
@@ -354,6 +395,9 @@ class Ui_CRM_form(object):
 
     
     def add_sql_act(self):
+        '''
+        adds activity and repopulates table
+        '''
         import datetime
         #Connect to sever
         session = self.sql_connect()
@@ -385,9 +429,12 @@ class Ui_CRM_form(object):
         rec_act = e
         #update main table
         res = session.query(act_log).filter(act_log.client_id == str(c)).order_by("transaction_id desc").all()
-        self.tableMain_build(res)
+        self.tableMain_build_act(res)
     
     def add_sql_c(self):
+        '''
+        adds client and repopulates table
+        '''
         import datetime
         
         session = self.sql_connect()
@@ -419,15 +466,21 @@ class Ui_CRM_form(object):
 
 
     def del_act(self):
+        '''
+        deletes addded activity
+        '''
         print "test"
         #connect to the database
         #  session=self.sql_connect()        
         # # if not(rec_act ==""):
         #  session.query(act_log).filter(act_log.transaction_id==rec_act).delete()
         #  res=session.query(act_log).order_by("Date desc").all()
-        #  self.tableMain_build(res)
+        #  self.tableMain_build_act(res)
 
     def del_c(self):
+        '''
+        deletes added contact
+        '''
         print "test"
         #connect to the database
         # session=self.sql_connect()
@@ -437,6 +490,9 @@ class Ui_CRM_form(object):
 
 
     def c_activity(self, item):
+        '''
+        dynamically populates the main table based on which contact is clicked on the list widget
+        '''
         #maket his on click function set the value of that combo box and bring up activity to that patient. thus easy input
         import re
         session = self.sql_connect()
@@ -465,7 +521,7 @@ class Ui_CRM_form(object):
         res = session.query(act_log).filter(act_log.client_id == v).all()
 
         #build table
-        self.tableMain_build(res)
+        self.tableMain_build_act(res)
 
         return v
 
@@ -491,7 +547,7 @@ class Ui_CRM_form(object):
 
     def populate_activity_log(self):
         '''
-        Populates the activity log results
+        Populates the activity log results when the UI first INIT
         '''
         session = self.sql_connect()
         
@@ -511,12 +567,41 @@ class Ui_CRM_form(object):
         for e,i in enumerate(res):
             for o in xrange(0,5):
                 self.tableWidget.setItem(e, o, self.sqltotext_act(o,i))
+    
+    def populate_contact_list(self):
+        '''
+        Populates the client contact list
+        '''
+        session = self.sql_connect()
+        #session.query(contact).filter(contact.client_id == rec_client)
+        res = session.query(contact).limit(9)
 
+        #Setup our table 
+        self.tableWidget.setRowCount(9)
+        self.tableWidget.setColumnCount(5)
+        #self.tableWidget = QtGui.QTableWidget(CRM_form) 
+        #set headers
+        for d in xrange(0,5):
+            h = {0:'PROVIDER_NAME',1:'SPECIALITY', 2:'PHONE',3:'ADDRESS', 4:'Miles'}
+            header_item = h[d]
+            self.tableWidget.setHorizontalHeaderItem(d,QtGui.QTableWidgetItem(header_item))
+
+        #populate table
+        for e,i in enumerate(res):
+            for o in xrange(0,5):
+                self.tableWidget.setItem(e, o, self.sqltotext_contact(o, i)(o,i))
+    
     def open_referncefolder(self):
+        '''
+        opens reference form pdf folder.
+        '''
         import os
         os.startfile('C:\Users\Andrew\Documents\CRM\db Tests\Reference Forms') # opens explorer at C:\ drive
 
     def open_referncefile(self):
+        ''''
+        opens reference form pdf file. 
+        '''
         import os
         os.startfile('C:\Users\Andrew\Documents\CRM\db Tests\Reference Forms/test.pdf')#opends pdf # this is windows only
 
