@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship, backref
 #use these to create tabels from scratch
 #engine = create_engine('sqlite:///mymusic.db', echo=True)
 Base = declarative_base()
- 
+
  
 ########################################################################
 class client(Base):

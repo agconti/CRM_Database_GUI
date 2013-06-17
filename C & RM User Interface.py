@@ -192,10 +192,10 @@ class Ui_CRM_form(object):
         QtCore.QObject.connect(self.exitbutt, QtCore.SIGNAL(_fromUtf8("clicked()")), CRM_form.close)
         QtCore.QObject.connect(self.listWidget, QtCore.SIGNAL(_fromUtf8("itemClicked(QListWidgetItem*)")), self.c_activity)
         QtCore.QObject.connect(self.addsql_submitt, QtCore.SIGNAL(_fromUtf8("clicked()")), self.add_sql_act)
-        QtCore.QObject.connect(self.clientcontacts, QtCore.SIGNAL(_fromUtf8("clicked()")), self.populate_contact_list)
+        QtCore.QObject.connect(self.clientcontacts, QtCore.SIGNAL(_fromUtf8("clicked()")), self.contact_list_populate)
         QtCore.QObject.connect(self.clientreffernceform, QtCore.SIGNAL(_fromUtf8("clicked()")), self.open_referncefile)
         QtCore.QObject.connect(self.clientcombo, QtCore.SIGNAL(_fromUtf8("currentIndexChanged(QString)")), self.c_activity)
-        QtCore.QObject.connect(self.viewallcontactsbutt, QtCore.SIGNAL(_fromUtf8("clicked()")), self.populate_contact_list)
+        QtCore.QObject.connect(self.viewallcontactsbutt, QtCore.SIGNAL(_fromUtf8("clicked()")), self.contact_list_populate)
         QtCore.QObject.connect(self.viewallreferncebutt, QtCore.SIGNAL(_fromUtf8("clicked()")), self.open_referncefolder)
         QtCore.QObject.connect(self.caddsumbit, QtCore.SIGNAL(_fromUtf8("clicked()")), self.add_sql_c)
         QtCore.QObject.connect(self.cdelete, QtCore.SIGNAL(_fromUtf8("clicked()")), self.del_c)
@@ -266,9 +266,9 @@ class Ui_CRM_form(object):
         
         return session
  
-    def sqltotext_act(self,o,i):
+    def sqltotext_act(self, o, i):
         '''
-
+        translates strings to QTableWidgetItems
         '''
         #for the act_log table
         #needs the o as an iterable, and the sqlachemy object i
@@ -280,16 +280,15 @@ class Ui_CRM_form(object):
         item.setText(str(y))
         return item
     
-    def sqltotext_contact(self,o,i):
+    def sqltotext_contact(self, o, i):
         '''
-
+        translates strings to QTableWidgetItems
         '''
         #for the act_log table
         #needs the o as an iterable, and the sqlachemy object i
         # needs to deal with characters like \ and suchbefore the start of a decrpt ect.
-        g = {0:'PROVIDER_NAME',1:'SPECIALITY', 2:'PHONE',3:'ADDRESS', 4:'Miles'}
+        g = {0: i.PROVIDER_NAME,1: i.SPECIALITY, 2: i.PHONE, 3: i.ADDRESS, 4: i.Miles}
         y = g[o]
-  
         item = QtGui.QTableWidgetItem()
         item.setText(str(y))
         return item
@@ -329,9 +328,9 @@ class Ui_CRM_form(object):
             for o in xrange(0,6):
                 self.tableWidget.setItem(e, o, self.sqltotext_client(o,i))
    
-    def tableMain_build_act(self,res):
+    def tableMain_build_act(self, res):
         '''
-        etup our table for displaying activity log info
+        setup our table for displaying activity log info
         '''
         #self.tableWidget = QtGui.QTableWidget(CRM_form) 
         self.tableWidget.setRowCount(len(res))
@@ -341,14 +340,14 @@ class Ui_CRM_form(object):
         for d in xrange(0,5):
             h = {0:'Client Id',1:'Date', 2:'Description',3:'Time', 4:'Total'} 
             header_item = h[d]
-            self.tableWidget.setHorizontalHeaderItem(d,QtGui.QTableWidgetItem(header_item))
+            self.tableWidget.setHorizontalHeaderItem(d, QtGui.QTableWidgetItem(header_item))
 
         #populate table
         for e,i in enumerate(res):
             for o in xrange(0,5):
                 self.tableWidget.setItem(e, o, self.sqltotext_act(o,i))
     
-    def tableMain_build_contact(self,res):
+    def tableMain_build_contact(self, res):
         '''
         Setup our table for displaying contacts
         '''
@@ -360,12 +359,12 @@ class Ui_CRM_form(object):
         for d in xrange(0,5):
             h = {0:'PROVIDER_NAME',1:'SPECIALITY', 2:'PHONE',3:'ADDRESS', 4:'Miles'} 
             header_item = h[d]
-            self.tableWidget.setHorizontalHeaderItem(d,QtGui.QTableWidgetItem(header_item))
+            self.tableWidget.setHorizontalHeaderItem(d, QtGui.QTableWidgetItem(header_item))
 
         #populate table
         for e,i in enumerate(res):
             for o in xrange(0,5):
-                self.tableWidget.setItem(e, o, self.sqltotext_act(o,i))
+                self.tableWidget.setItem(e, o, self.sqltotext_contact(o, i))
 
     def sql_query_all_act(self):
         '''
@@ -378,8 +377,7 @@ class Ui_CRM_form(object):
         res = session.query(act_log).order_by("Date desc").all()
         #build table
         self.tableMain_build_act(res)
-    
-        
+           
     def sql_query_all_client(self):
         '''
         queries all clients
@@ -525,6 +523,16 @@ class Ui_CRM_form(object):
 
         return v
 
+    def contact_list_populate(self):
+        '''
+        populates contact list when button is pressed.
+        '''
+        session = self.sql_connect()
+
+        res =session.query(contact).all()
+
+        #build table
+        self.tableMain_build_contact(res)
 
     def populate_clients(self):
         '''
@@ -568,29 +576,7 @@ class Ui_CRM_form(object):
             for o in xrange(0,5):
                 self.tableWidget.setItem(e, o, self.sqltotext_act(o,i))
     
-    def populate_contact_list(self):
-        '''
-        Populates the client contact list
-        '''
-        session = self.sql_connect()
-        #session.query(contact).filter(contact.client_id == rec_client)
-        res = session.query(contact).limit(9)
 
-        #Setup our table 
-        self.tableWidget.setRowCount(9)
-        self.tableWidget.setColumnCount(5)
-        #self.tableWidget = QtGui.QTableWidget(CRM_form) 
-        #set headers
-        for d in xrange(0,5):
-            h = {0:'PROVIDER_NAME',1:'SPECIALITY', 2:'PHONE',3:'ADDRESS', 4:'Miles'}
-            header_item = h[d]
-            self.tableWidget.setHorizontalHeaderItem(d,QtGui.QTableWidgetItem(header_item))
-
-        #populate table
-        for e,i in enumerate(res):
-            for o in xrange(0,5):
-                self.tableWidget.setItem(e, o, self.sqltotext_contact(o, i)(o,i))
-    
     def open_referncefolder(self):
         '''
         opens reference form pdf folder.
