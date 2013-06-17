@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CRM_form</class>
+ <widget class="QDialog" name="CRM_form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>718</width>
+    <height>624</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>C &amp; RM Activity Log</string>
+  </property>
+  <property name="windowOpacity">
+   <double>1.000000000000000</double>
+  </property>
+  <widget class="QTableWidget" name="tableWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>20</y>
+     <width>681</width>
+     <height>291</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>340</y>
+     <width>411</width>
+     <height>261</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>2</number>
+   </property>
+   <widget class="QWidget" name="Look_Up">
+    <attribute name="title">
+     <string>Look Up</string>
+    </attribute>
+    <widget class="QPushButton" name="viewallrbutt">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>181</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>View All Activity Records</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="viewallcbutt">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>20</y>
+       <width>171</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>View All Client Records</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="viewallcontactsbutt">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>181</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>View All Contacts</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="viewallreferncebutt">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>80</y>
+       <width>171</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>View Reference All Forms</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="Add">
+    <attribute name="title">
+     <string>Add Activity</string>
+    </attribute>
+    <widget class="QLineEdit" name="time_input">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>50</y>
+       <width>21</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>46</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Date</string>
+     </property>
+    </widget>
+    <widget class="QDateEdit" name="dateEdit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>110</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>30</y>
+       <width>46</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Time</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="descript_cat_inut">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>50</y>
+       <width>111</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>Care Coordination</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Correspondence</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Onsite Hospital</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Phone Call Patient</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Medical Record Review</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>30</y>
+       <width>46</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Category</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>121</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Description of Activities</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="addsql_submitt">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>200</y>
+       <width>75</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Submit</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>181</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add Activity to the Database:</string>
+     </property>
+    </widget>
+    <widget class="QPlainTextEdit" name="descpt_inout">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>100</y>
+       <width>381</width>
+       <height>91</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="clientcombo">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>50</y>
+       <width>111</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>Tom</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Bill</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Steve</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>30</y>
+       <width>46</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Client:</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="clientcontacts">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>200</y>
+       <width>111</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Client Contacts</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="clientreffernceform">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>200</y>
+       <width>111</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Client Refrence Form</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Add Client</string>
+    </attribute>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="exitbutt">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>570</y>
+     <width>91</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="listWidget">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>360</y>
+     <width>256</width>
+     <height>192</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>330</y>
+     <width>91</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Client Information</string>
+   </property>
+  </widget>
+  <action name="actionTestaction">
+   <property name="text">
+    <string>Testaction</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>viewallrbutt</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>422</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>193</x>
+     <y>285</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewallcbutt</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget</receiver>
+   <slot>selectAll()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>277</x>
+     <y>422</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>253</x>
+     <y>303</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>exitbutt</sender>
+   <signal>clicked()</signal>
+   <receiver>CRM_form</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>648</x>
+     <y>581</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>676</x>
+     <y>433</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewallrbutt</sender>
+   <signal>clicked()</signal>
+   <receiver>CRM_form</receiver>
+   <slot>pyquerry1()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>115</x>
+     <y>422</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>547</x>
+     <y>365</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewallcbutt</sender>
+   <signal>clicked()</signal>
+   <receiver>CRM_form</receiver>
+   <slot>pyqeurry2()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>310</x>
+     <y>422</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>550</x>
+     <y>406</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listWidget</sender>
+   <signal>itemClicked(QListWidgetItem*)</signal>
+   <receiver>tableWidget</receiver>
+   <slot>selectAll()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>684</x>
+     <y>433</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>637</x>
+     <y>304</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>addsql_submitt</sender>
+   <signal>clicked()</signal>
+   <receiver>CRM_form</receiver>
+   <slot>pyqeurry2()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>376</x>
+     <y>592</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>475</x>
+     <y>575</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dateEdit</sender>
+   <signal>dateChanged(QDate)</signal>
+   <receiver>CRM_form</receiver>
+   <slot>pyquerry1()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>135</x>
+     <y>430</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>265</x>
+     <y>331</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>descript_cat_inut</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>CRM_form</receiver>
+   <slot>pyquerry1()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>222</x>
+     <y>427</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>358</x>
+     <y>325</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>time_input</sender>
+   <signal>editingFinished()</signal>
+   <receiver>CRM_form</receiver>
+   <slot>pyquerry1()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>422</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>186</x>
+     <y>319</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>descpt_inout</sender>
+   <signal>textChanged()</signal>
+   <receiver>CRM_form</receiver>
+   <slot>pyquerry1()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>301</x>
+     <y>501</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>430</x>
+     <y>321</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clientcontacts</sender>
+   <signal>clicked()</signal>
+   <receiver>CRM_form</receiver>
+   <slot>pyquerry1()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>275</x>
+     <y>578</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>578</x>
+     <y>571</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clientreffernceform</sender>
+   <signal>clicked()</signal>
+   <receiver>CRM_form</receiver>
+   <slot>pyquerry1()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>120</x>
+     <y>583</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>541</x>
+     <y>585</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clientcombo</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>CRM_form</receiver>
+   <slot>pyquerry1()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>385</x>
+     <y>426</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>577</x>
+     <y>319</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewallcontactsbutt</sender>
+   <signal>clicked()</signal>
+   <receiver>CRM_form</receiver>
+   <slot>pyquerry1()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>128</x>
+     <y>458</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>488</x>
+     <y>567</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewallreferncebutt</sender>
+   <signal>clicked()</signal>
+   <receiver>CRM_form</receiver>
+   <slot>pyquerry1()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>368</x>
+     <y>456</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>572</x>
+     <y>565</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>pyquerry1()</slot>
+  <slot>pyqeurry2()</slot>
+ </slots>
+</ui>

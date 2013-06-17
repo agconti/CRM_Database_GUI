@@ -1,0 +1,8 @@
+provider_id,client_id,PROVIDER_NAME,SPECIALITY,PHONE,CONTACT_NAME,ADDRESS,MISC,Miles
+1,1,Dr. Pepper,Feet,230-123-4356,Sue,123 Fake Street,,20
+2,1,Dr. Jones,Nose,123-532-4234,Steve,124 Fake Street,,30
+3,2,Dr. Anderson,Back,543-634-1233,Sally,125 Fake Street,,40
+4,3,Dr. Tom,Head,234-532-6444,Sam,126 Fake Street,,123
+5,4,Dr. Conti,Hands,203-234-5234,Jim,127 Fake Street,,1
+6,5,Dr. Oswald,Teeth,213-342-2134,John ,128 Fake Street,,32
+7,1,Dr. Rizzo,Feet,332-123-2345,Ted,129 Fake Street,,4
