@@ -467,7 +467,8 @@ class Ui_CRM_form(object):
         '''
         deletes addded activity
         '''
-        print "test"
+        pass
+        #print "test"
         #connect to the database
         #  session=self.sql_connect()        
         # # if not(rec_act ==""):
@@ -479,7 +480,8 @@ class Ui_CRM_form(object):
         '''
         deletes added contact
         '''
-        print "test"
+        pass
+        #print "test"
         #connect to the database
         # session=self.sql_connect()
         # session.query(client).filter(client.client_id==rec_client).delete()
